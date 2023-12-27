@@ -1,4 +1,5 @@
-from pydantic import BaseSettings
+from pydantic import ConfigDict, field_validator, EmailStr
+from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
@@ -21,4 +22,4 @@ class Settings(BaseSettings):
         env_file_encoding = "utf-8"
 
 
-settings = Settings()
+config = Settings()
