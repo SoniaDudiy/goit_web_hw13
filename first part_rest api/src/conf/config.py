@@ -1,8 +1,11 @@
-from pydantic import ConfigDict, field_validator, EmailStr
 from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
+    POSTGRES_DB: str
+    POSTGRES_USER: str
+    POSTGRES_PASSWORD: str
+    POSTGRES_PORT: int
     sqlalchemy_database_url: str
     secret_key: str
     algorithm: str
