@@ -16,7 +16,15 @@ from src.routes import contacts, search, auth, users
 
 app = FastAPI()
 
-app.mount("/static", StaticFiles(directory='src/static'), name="static")
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/api/healthchecker")
 def healthchecker(db: Session = Depends(get_db)):
