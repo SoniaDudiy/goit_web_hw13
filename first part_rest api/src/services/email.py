@@ -4,16 +4,16 @@ from fastapi_mail import FastMail, MessageSchema, ConnectionConfig, MessageType
 from fastapi_mail.errors import ConnectionErrors
 from pydantic import EmailStr
 
-from src.conf.config import settings
+from src.conf.config import config
 from src.services.auth import auth_service
 
 
 conf = ConnectionConfig(
-    MAIL_USERNAME=settings.mail_username,
-    MAIL_PASSWORD=settings.mail_password,
-    MAIL_FROM=EmailStr(settings.mail_username),
-    MAIL_PORT=settings.mail_port,
-    MAIL_SERVER=settings.mail_server,
+    MAIL_USERNAME=config.mail_username,
+    MAIL_PASSWORD=config.mail_password,
+    MAIL_FROM=EmailStr(config.mail_username),
+    MAIL_PORT=config.mail_port,
+    MAIL_SERVER=config.mail_server,
     MAIL_FROM_NAME="Our service feedback",
     MAIL_STARTTLS=False,
     MAIL_SSL_TLS=True,
@@ -23,17 +23,18 @@ conf = ConnectionConfig(
 )
 
 
-async def send_email(email: EmailStr, username: str, host: str, payload: dict):
+async def send_email(email: EmailStr, username: str, host: str):
     try:
         token_verification = auth_service.create_email_token({"sub": email})
         message = MessageSchema(
-            subject=payload["subject"],
+            subject="Confirm your email ",
             recipients=[email],
             template_body={"host": host, "username": username, "token": token_verification},
             subtype=MessageType.html
         )
+
         fm = FastMail(conf)
-        await fm.send_message(message, template_name=payload["template_name"])
+        await fm.send_message(message, template_name="verify_email.html")
     except ConnectionErrors as err:
         print(err)
 
