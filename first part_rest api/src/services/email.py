@@ -11,7 +11,7 @@ from src.services.auth import auth_service
 conf = ConnectionConfig(
     MAIL_USERNAME=config.mail_username,
     MAIL_PASSWORD=config.mail_password,
-    MAIL_FROM=EmailStr(config.mail_username),
+    MAIL_FROM=config.mail_username,
     MAIL_PORT=config.mail_port,
     MAIL_SERVER=config.mail_server,
     MAIL_FROM_NAME="Our service feedback",
